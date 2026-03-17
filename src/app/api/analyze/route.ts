@@ -21,12 +21,12 @@ function generateTextReport(symbol: string, interval: string, marketData: any, i
     const decimalPlaces = strategyConfig.reportConfig.decimalPlaces;
     
     const combinedSupport = [dynamicLevels.support, support2, support1]
-        .filter(v => v > 0 && v < currentPrice * 1.001)
-        .sort((a, b) => b - a);
+        .filter((v: any) => v > 0 && v < currentPrice * 1.001)
+        .sort((a: any, b: any) => b - a);
 
     const combinedResistance = [dynamicLevels.resistance, resistance1, resistance2]
-        .filter(v => v < Infinity && v > currentPrice * 0.999)
-        .sort((a, b) => a - b);
+        .filter((v: any) => v < Infinity && v > currentPrice * 0.999)
+        .sort((a: any, b: any) => a - b);
 
     let output = `正在从币安获取 ${symbol} 永续合约 ${interval} K线数据和资金费率...\n`;
     
@@ -39,8 +39,8 @@ function generateTextReport(symbol: string, interval: string, marketData: any, i
     output += `根据实时行情数据\n`;
     output += `当前价格：${currentPrice.toFixed(decimalPlaces)} USDT\n`;
     output += `24小时涨跌：${last24hChange >= 0 ? '+' : ''}${last24hChange.toFixed(decimalPlaces)}%\n`;
-    output += `主要支撑位：${combinedSupport.map(s => s.toFixed(decimalPlaces) + ' USDT').join('、')}\n`;
-    output += `主要压力位：${combinedResistance.map(r => r.toFixed(decimalPlaces) + ' USDT').join('、')}\n`;
+    output += `主要支撑位：${combinedSupport.map((s: any) => s.toFixed(decimalPlaces) + ' USDT').join('、')}\n`;
+    output += `主要压力位：${combinedResistance.map((r: any) => r.toFixed(decimalPlaces) + ' USDT').join('、')}\n`;
     
     output += `斐波那契回调位：\n`;
     const fibLevelsOrdered = Object.entries(fibonacciLevels).sort(([keyA], [keyB]) => parseFloat(keyA) - parseFloat(keyB));
@@ -124,7 +124,7 @@ function generateTextReport(symbol: string, interval: string, marketData: any, i
         output += `短线操作建议：${multiTimeframeAnalysis.shortTermAdvice}\n`;
         if (strategyConfig.reportConfig.verboseMode) {
             output += `详细分析：\n`;
-            multiTimeframeAnalysis.timeframes.forEach(tf => {
+            multiTimeframeAnalysis.timeframes.forEach((tf: any) => {
                 output += ` ${tf.timeframe}: ${tf.trend} (价格: ${tf.price}, MA20: ${tf.ma20}, 偏离: ${tf.priceVsMA})\n`;
             });
         }
@@ -136,7 +136,7 @@ function generateTextReport(symbol: string, interval: string, marketData: any, i
     output += `理由：${reasoning}。\n`;
     if (signalList.length > 0) {
         output += `关键信号：\n`;
-        signalList.forEach(s => output += ` - ${s}\n`);
+        signalList.forEach((s: any) => output += ` - ${s}\n`);
     }
 
     output += `\n--- 详细交易策略 ---\n`;
@@ -147,15 +147,15 @@ function generateTextReport(symbol: string, interval: string, marketData: any, i
     
     if (tradingStrategy.riskRewardRatios.length > 0) {
         output += `目标价位：\n`;
-        const goodRRTargets = tradingStrategy.riskRewardRatios.filter(item => item.isGood);
-        const otherTargets = tradingStrategy.riskRewardRatios.filter(item => !item.isGood);
+        const goodRRTargets = tradingStrategy.riskRewardRatios.filter((item: any) => item.isGood);
+        const otherTargets = tradingStrategy.riskRewardRatios.filter((item: any) => !item.isGood);
         if (goodRRTargets.length > 0) {
             output += ` 符合盈亏比要求（>=1:${strategyConfig.tradingStrategy.minRiskRewardRatio}）的目标：\n`;
-            goodRRTargets.forEach((item, i) => output += `  第${i+1}目标：${item.target} USDT（潜在收益 ${item.rewardPct.replace('+', '')}）→ 盈亏比 ${item.rr}。\n`);
+            goodRRTargets.forEach((item: any, i: number) => output += `  第${i+1}目标：${item.target} USDT（潜在收益 ${item.rewardPct.replace('+', '')}）→ 盈亏比 ${item.rr}。\n`);
         }
         if (otherTargets.length > 0) {
-            output += ` 其他潜在目标（盈亏比 < 1:${strategyConfig.tradingStrategy.minRiskRewardRatio}）：\n`;
-            otherTargets.forEach((item, i) => output += `  目标${i + 1}：${item.target} USDT（潜在收益 ${item.rewardPct.replace('+', '')}）→ 盈亏比 ${item.rr}。\n`);
+            output += ` 其他潜在目标（盈亏比 < 1:${strategyConfig.tradingStrategy.minRiskRewardRatio}） Jockey的目标：\n`;
+            otherTargets.forEach((item: any, i: number) => output += `  目标${i + 1}：${item.target} USDT（潜在收益 ${item.rewardPct.replace('+', '')}）→ 盈亏比 ${item.rr}。\n`);
         }
         output += ` 提示：${tradingStrategy.direction.includes('看空') ? `若放量跌破前低，可持仓看向更低支撑。请耐心等待价格反弹至理想阻力区间，并出现遇阻信号后再考虑入场。` : `若放量突破前高，可持仓看向更高阻力。请耐心等待价格回调至理想入场区间，并出现企稳信号后再考虑入场。`}\n`;
     }
