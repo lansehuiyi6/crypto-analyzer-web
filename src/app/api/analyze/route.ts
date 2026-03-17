@@ -44,7 +44,7 @@ function generateTextReport(symbol: string, interval: string, marketData: any, i
     
     output += `斐波那契回调位：\n`;
     const fibLevelsOrdered = Object.entries(fibonacciLevels).sort(([keyA], [keyB]) => parseFloat(keyA) - parseFloat(keyB));
-    fibLevelsOrdered.forEach(([level, value]) => {
+    fibLevelsOrdered.forEach(([level, value]: [string, any]) => {
         output += ` - ${level} 回调位：${value.toFixed(decimalPlaces)} USDT\n`;
     });
     
