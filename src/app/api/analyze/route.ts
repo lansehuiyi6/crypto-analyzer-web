@@ -9,8 +9,8 @@ const candlePatterns = require('../../../../analyzer/candlePatterns');
 /**
  * 模拟原 analysis.js 中的 generateReport 逻辑，生成纯文本报告
  */
-function generateTextReport(symbol, interval, marketData, indicators, trendData, 
-                          signals, direction, reasoning, tradingStrategy, multiTimeframeAnalysis) {
+function generateTextReport(symbol: string, interval: string, marketData: any, indicators: any, trendData: any, 
+                          signals: any, direction: string, reasoning: string, tradingStrategy: any, multiTimeframeAnalysis: any) {
     
     const { currentPrice, latestVolume, volumeSMA, latestPriceChange } = indicators;
     const { tickerData, fundingRate } = marketData;
