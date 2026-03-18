@@ -1,6 +1,16 @@
 'use client';
 import { useState } from 'react';
 
+const POPULAR_COINS = [
+  { label: 'BTC', value: 'BTCUSDT' },
+  { label: 'ETH', value: 'ETHUSDT' },
+  { label: 'BNB', value: 'BNBUSDT' },
+  { label: 'SOL', value: 'SOLUSDT' },
+  { label: 'ADA', value: 'ADAUSDT' },
+  { label: 'DOT', value: 'DOTUSDT' },
+  { label: 'XRP', value: 'XRPUSDT' },
+];
+
 export default function Home() {
   const [symbol, setSymbol] = useState<string>('BTCUSDT');
   const [period, setPeriod] = useState<string>('15m');
@@ -29,6 +39,8 @@ export default function Home() {
     }
   };
 
+  const isPopularCoin = POPULAR_COINS.some(coin => coin.value === symbol);
+
   return (
     <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white p-4 font-sans">
       <main className="max-w-4xl mx-auto space-y-6">
@@ -37,12 +49,29 @@ export default function Home() {
         <div className="flex flex-wrap gap-4 items-end bg-zinc-50 dark:bg-zinc-900 p-4 rounded-lg border border-zinc-200 dark:border-zinc-800">
           <div className="flex flex-col gap-1">
             <label className="text-sm font-medium">Trading Pair</label>
-            <input
-              type="text"
-              value={symbol}
-              onChange={(e) => setSymbol(e.target.value.toUpperCase())}
-              className="px-3 py-2 bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            <div className="flex gap-2">
+              <select
+                value={isPopularCoin ? symbol : 'CUSTOM'}
+                onChange={(e) => {
+                  if (e.target.value !== 'CUSTOM') {
+                    setSymbol(e.target.value);
+                  }
+                }}
+                className="px-3 py-2 bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                {POPULAR_COINS.map(coin => (
+                  <option key={coin.value} value={coin.value}>{coin.label}</option>
+                ))}
+                <option value="CUSTOM">Custom...</option>
+              </select>
+              <input
+                type="text"
+                value={symbol}
+                placeholder="e.g. BTCUSDT"
+                onChange={(e) => setSymbol(e.target.value.toUpperCase())}
+                className="px-3 py-2 bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-32"
+              />
+            </div>
           </div>
           
           <div className="flex flex-col gap-1">
